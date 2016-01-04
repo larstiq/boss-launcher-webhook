@@ -485,8 +485,8 @@ get_tagmsg () {
 
 dash_trim () {
   # and workaround for github breaking the subject line with ... automatically
-  # in pull requests
-  sed -e 's/^/- /' -e '/^\s*$/d' -e 's/JB#[0-9]\{1,\}\.\.\.$//'
+  # in pull requests as well as removing npsb characters
+  sed -e 's/^/- /' -e '/^\s*$/d' -e 's/JB#[0-9]\{1,\}\.\.\.$//' -e 's/\xc2\xa0/ /g'
 }
 
 grep_entry () {
@@ -929,6 +929,8 @@ run_android_repo_service () {
   $REPOCMD
   find_spec_file "$MYOUTDIR"
   find_changes_file "$MYOUTDIR"
+  find_package_name "$SPECFILE"
+  echo "package name is $PACKAGE_NAME"
   set_versha
   set_spec_version
 }
